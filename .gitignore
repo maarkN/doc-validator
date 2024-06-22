@@ -1,0 +1,20 @@
+.env
+data/*
+logs/*
+**/__pycache__/
+
+*.app
+*.exe
+*.war
+
+# Large media files
+*.mp4
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv

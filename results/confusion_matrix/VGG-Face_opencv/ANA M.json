@@ -1,0 +1,524 @@
+[
+    {
+        "verified": true,
+        "distance": 0.5832916989043804,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 1071,
+                "h": 804,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "ARACI A."
+    },
+    {
+        "verified": false,
+        "distance": 0.7641938901301102,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 82,
+                "h": 82,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "SALETE P."
+    },
+    {
+        "verified": false,
+        "distance": 0.8827632828444986,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 220,
+                "h": 220,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.21,
+        "person_1": "ANA M.",
+        "person_2": "MARINALVA M."
+    },
+    {
+        "verified": false,
+        "distance": 0.9292908196345118,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 125,
+                "h": 125,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.21,
+        "person_1": "ANA M.",
+        "person_2": "JOEL A."
+    },
+    {
+        "verified": false,
+        "distance": 0.9272435405086937,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 205,
+                "h": 205,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "MARIA N."
+    },
+    {
+        "verified": false,
+        "distance": 0.7962697842994494,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 73,
+                "h": 73,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "MARIA A."
+    },
+    {
+        "verified": false,
+        "distance": 0.9253419972896967,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 86,
+                "h": 86,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "FRANCISCO B."
+    },
+    {
+        "verified": false,
+        "distance": 0.8533923138748643,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 136,
+                "h": 136,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "RAIMUNDA M."
+    },
+    {
+        "verified": true,
+        "distance": 0.6128997611927791,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 1080,
+                "h": 626,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "GERALDO F."
+    },
+    {
+        "verified": false,
+        "distance": 0.689584797457087,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 86,
+                "h": 86,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "LICINIO R."
+    },
+    {
+        "verified": true,
+        "distance": 0.5792069965247606,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 960,
+                "h": 1280,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.23,
+        "person_1": "ANA M.",
+        "person_2": "ANA M."
+    },
+    {
+        "verified": true,
+        "distance": 0.5762513022079896,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 450,
+                "h": 800,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "MARIA D."
+    },
+    {
+        "verified": true,
+        "distance": 0.5552799033354974,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 446,
+                "h": 793,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "MODESTO P."
+    },
+    {
+        "verified": false,
+        "distance": 0.809255862092469,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 164,
+                "h": 164,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.21,
+        "person_1": "ANA M.",
+        "person_2": "DEBORAH C."
+    },
+    {
+        "verified": false,
+        "distance": 0.9018938479475043,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 94,
+                "h": 94,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "JOSE S."
+    },
+    {
+        "verified": false,
+        "distance": 0.9167872318679609,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 113,
+                "h": 113,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.21,
+        "person_1": "ANA M.",
+        "person_2": "ALFIM F."
+    },
+    {
+        "verified": false,
+        "distance": 0.891784050425068,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 108,
+                "h": 108,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.22,
+        "person_1": "ANA M.",
+        "person_2": "MARIA F."
+    },
+    {
+        "verified": true,
+        "distance": 0.6489139965796525,
+        "threshold": 0.68,
+        "model": "VGG-Face",
+        "detector_backend": "skip",
+        "similarity_metric": "cosine",
+        "facial_areas": {
+            "img1": {
+                "x": 0,
+                "y": 0,
+                "w": 121,
+                "h": 121,
+                "left_eye": null,
+                "right_eye": null
+            },
+            "img2": {
+                "x": 0,
+                "y": 0,
+                "w": 900,
+                "h": 1600,
+                "left_eye": null,
+                "right_eye": null
+            }
+        },
+        "time": 0.23,
+        "person_1": "ANA M.",
+        "person_2": "ODETE P."
+    }
+]
