@@ -33,10 +33,10 @@ def verify_faces_with_image():
     try:
         document = request.files['document']
         face = request.files['face']
-        print(document)
-        print(face)
+   
         doc_image_path = path.join(path.curdir, 'images' , f'{uuid4()}.jpg')
         face_image_path = path.join(path.curdir, 'images' , f'{uuid4()}.jpg')
+        
         document.save(doc_image_path)
         face.save(face_image_path)
         args = {
@@ -54,5 +54,7 @@ def verify_faces_with_image():
 
 if __name__ == '__main__':
     app.run(
-        #host="192.168.1.28",
-        debug=True)
+        host="0.0.0.0",
+        port=8000,
+        debug=True
+    )

@@ -4,11 +4,12 @@ services:
   facematch:
     build: .
     ports:
-      - 3001:5000
+      - 8000:8000
     volumes:
       - ./config:/app/config
       - ./images:/app/images
       - ./results:/app/results
+      - ./:/app
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
