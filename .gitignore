@@ -2,6 +2,8 @@
 data/*
 logs/*
 **/__pycache__/
+.venv
+images/*
 
 *.app
 *.exe

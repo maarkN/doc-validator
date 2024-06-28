@@ -1,0 +1,12 @@
+deepface==0.0.92
+Flask==3.0.3
+matplotlib==3.9.0
+numpy==1.26
+pandas==2.2.2
+Pillow==10.3.0
+pydantic==2.7.4
+Requests==2.32.3
+seaborn==0.13.2
+tqdm==4.66.4
+swagger-ui-py==23.9.23
+uuid==1.30

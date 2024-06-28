@@ -57,8 +57,11 @@ class FacialDocumentValidator:
     def compare_face_to_doc(
             self, face_img, doc_img, 
             detect_fraud=False, 
-            detect_face_attributes=False
+            detect_face_attributes=False,
+            remove_image=False,
         ) -> ComparatorModel:
+        face_image_path = f'{face_img}'
+        doc_image_path = f'{doc_img}'
 
         face_img = self.convert_image_to_numpy(face_img)
         doc_img = self.convert_image_to_numpy(doc_img)
@@ -89,6 +92,10 @@ class FacialDocumentValidator:
                 align=True,
             )
             comparator_model.face_attributes = attributes[0]
+            
+        if remove_image:
+            os.remove(face_image_path)
+            os.remove(doc_image_path)
         
         return comparator_model.to_dict()
 
