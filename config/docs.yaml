@@ -21,7 +21,12 @@ paths:
     post:
       summary: endpoint to verify faces using external url
       description: This endpoint will verify faces from a photo and doc using external url.
-   
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiArgsModel'
       responses:
         '200':
           description: ''
@@ -101,3 +106,33 @@ components:
         face_attributes:
           type: object
           example: null
+    ApiArgsModel:
+      type: object
+      properties:
+        face_img:
+          type: string
+          description: Face image
+          example: https://i.imgur.com/w4e4h4b.jpg
+        doc_img:
+          type: string
+          description: Document image
+          example: https://i.imgur.com/w4e4h4b.jpg
+        detect_fraud:
+          type: boolean
+          description: Detect fraud
+        detect_face_attributes:
+          type: array
+          items:
+            type: string
+            enum:
+              - emotion
+              - age
+              - gender
+              - race
+          description: Detect face attributes
+        remove_image:
+          type: boolean
+          description: Remove images after verification
+      required:
+        - face_img
+        - doc_img
