@@ -69,9 +69,20 @@ sys.modules.setdefault("deepface", _deepface_module)
 
 # The legacy app resolves config/docs.yaml and images/ relative to the CWD.
 os.chdir(REPO_ROOT)
-sys.path.insert(0, str(REPO_ROOT))
+# Appended (not prepended) so the new src/app package keeps priority for
+# `import app`; the legacy modules (src.face, models.models) still resolve.
+sys.path.append(str(REPO_ROOT))
 
-from app import app as legacy_app  # noqa: E402
+# Load legacy app.py under a dedicated module name: plain `import app` would
+# collide with the new src/app package.
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location("legacy_app", REPO_ROOT / "app.py")
+assert _spec is not None and _spec.loader is not None
+_legacy_module = importlib.util.module_from_spec(_spec)
+sys.modules["legacy_app"] = _legacy_module
+_spec.loader.exec_module(_legacy_module)
+legacy_app = _legacy_module.app
 
 
 @pytest.fixture()
