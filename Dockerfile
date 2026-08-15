@@ -2,9 +2,9 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# OpenCV/DeepFace native runtime dependencies.
+# opencv-python-headless still links libglib (gthread) at import time.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 libglib2.0-0 \
+    && apt-get install -y --no-install-recommends libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:0.9.4 /uv /usr/local/bin/uv

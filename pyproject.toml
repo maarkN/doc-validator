@@ -11,7 +11,7 @@ dependencies = [
     "pydantic-settings>=2.3",
     "python-multipart>=0.0.9",
     "numpy>=1.26",
-    "opencv-python>=4.9",
+    "opencv-python-headless>=4.9",
     "requests>=2.31",
 ]
 
@@ -37,6 +37,16 @@ dev = [
 
 [tool.uv]
 package = false
+
+# CPU-only torch on Linux (the Docker runtime): the default PyPI wheels drag
+# the full multi-GB CUDA stack, which this CPU-only service can never use.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [tool.ruff]
 line-length = 88
