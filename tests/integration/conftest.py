@@ -24,6 +24,9 @@ class DeepFaceStub:
         self.reset()
 
     def reset(self):
+        # Drop per-test method overrides (e.g. stub.verify = explode).
+        for method_name in ("extract_faces", "verify", "analyze"):
+            self.__dict__.pop(method_name, None)
         self.extract_faces_calls = []
         self.verify_calls = []
         self.analyze_calls = []
@@ -81,7 +84,9 @@ def client(deepface_stub, tmp_path, monkeypatch):
     monkeypatch.setenv("APP_UPLOAD_DIR", str(tmp_path / "uploads"))
     get_settings.cache_clear()
     _get_engine.cache_clear()
-    with TestClient(create_app()) as test_client:
+    # raise_server_exceptions=False keeps real-server semantics: unhandled
+    # errors surface as 500 responses instead of failing the test client.
+    with TestClient(create_app(), raise_server_exceptions=False) as test_client:
         yield test_client
     get_settings.cache_clear()
 
