@@ -1,21 +1,24 @@
-# activate conda environment and install requirements from requirements.txt
-FROM python:3.10
+FROM python:3.12-slim
 
 WORKDIR /app
 
-RUN pip install --upgrade pip
+# OpenCV/DeepFace native runtime dependencies.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y libhdf5-dev
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+COPY --from=ghcr.io/astral-sh/uv:0.9.4 /uv /usr/local/bin/uv
 
-COPY requirements.txt .
+# Install locked dependencies (including the heavy ML extra) before copying
+# the source so code changes do not invalidate the dependency layer.
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --extra ml
 
-RUN pip install --no-binary h5py h5py
-RUN pip install -r requirements.txt
+COPY src ./src
 
-COPY . .
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONPATH=/app/src
 
 EXPOSE 8000
 
-CMD ["python", "app.py"]
-
+CMD ["uvicorn", "--factory", "app.main:create_app", "--host", "0.0.0.0", "--port", "8000"]
