@@ -1,0 +1,81 @@
+[project]
+name = "doc-validator"
+version = "1.0.0"
+description = "Face-matching API that verifies a selfie against the photo on an identity document"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-multipart>=0.0.9",
+    "numpy>=1.26",
+    "opencv-python>=4.9",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+# Heavy ML runtime (TensorFlow/PyTorch stacks). Installed only where inference
+# actually runs (the Docker image); local dev and CI stub the DeepFace boundary.
+ml = [
+    "deepface==0.0.92",
+    "tf-keras>=2.16",
+    "retina-face>=0.0.17",
+    "torch>=2.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2",
+    "httpx>=0.27",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pre-commit>=3.7",
+    "types-requests>=2.31",
+    # Needed only to run the characterization tests against the legacy Flask
+    # app; removed together with the legacy implementation.
+    "flask>=3.0",
+    "swagger-ui-py>=23.9.23",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+extend-exclude = [
+    # Legacy implementation, replaced incrementally and removed at the end.
+    "app.py",
+    "sender.py",
+    "src/face.py",
+    "models",
+    "utils",
+    "learning",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF", "D"]
+ignore = ["D203", "D213"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+"scripts/**" = ["D"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/app"]
+strict = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["cv2.*", "deepface.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
