@@ -51,7 +51,7 @@ def register_exception_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(DomainError)
     async def handle_domain_error(request: Request, error: DomainError) -> JSONResponse:
-        return _error_response(error.status_code, error.detail, error.code)
+        return error_response(error.status_code, error.detail, error.code)
 
     @app.exception_handler(RequestValidationError)
     async def handle_validation_error(
@@ -60,23 +60,24 @@ def register_exception_handlers(app: FastAPI) -> None:
         detail = "; ".join(
             f"{_field_path(item)}: {item['msg']}" for item in error.errors()
         )
-        return _error_response(422, detail, "validation_error")
+        return error_response(422, detail, "validation_error")
 
     @app.exception_handler(StarletteHTTPException)
     async def handle_http_exception(
         request: Request, error: StarletteHTTPException
     ) -> JSONResponse:
-        return _error_response(error.status_code, str(error.detail), "http_error")
+        return error_response(error.status_code, str(error.detail), "http_error")
 
     @app.exception_handler(Exception)
     async def handle_unexpected_error(
         request: Request, error: Exception
     ) -> JSONResponse:
         logger.exception("Unhandled error while processing %s", request.url.path)
-        return _error_response(500, "Internal server error.", "internal_error")
+        return error_response(500, "Internal server error.", "internal_error")
 
 
-def _error_response(status_code: int, detail: str, code: str) -> JSONResponse:
+def error_response(status_code: int, detail: str, code: str) -> JSONResponse:
+    """Build a response with the uniform ``{detail, code}`` error envelope."""
     return JSONResponse(
         status_code=status_code, content={"detail": detail, "code": code}
     )

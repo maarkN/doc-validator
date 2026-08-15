@@ -8,6 +8,8 @@ from uuid import uuid4
 
 from fastapi import Request, Response
 
+from app.core.exceptions import error_response
+
 correlation_id_var: ContextVar[str] = ContextVar("correlation_id", default="-")
 
 _REQUEST_ID_HEADER = "X-Request-ID"
@@ -62,7 +64,14 @@ async def correlation_id_middleware(
     correlation_id = request.headers.get(_REQUEST_ID_HEADER) or uuid4().hex[:12]
     token = correlation_id_var.set(correlation_id)
     try:
-        response = await call_next(request)
+        try:
+            response = await call_next(request)
+        except Exception:
+            # Handled here, not in the global Exception handler: Starlette
+            # runs that handler outside this middleware, where the
+            # correlation id would already be gone from the log and header.
+            logger.exception("Unhandled error while processing %s", request.url.path)
+            response = error_response(500, "Internal server error.", "internal_error")
         response.headers[_REQUEST_ID_HEADER] = correlation_id
         logger.info(
             "%s %s -> %d", request.method, request.url.path, response.status_code

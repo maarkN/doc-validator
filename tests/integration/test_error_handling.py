@@ -20,6 +20,30 @@ class TestUnexpectedErrors:
         assert body == {"detail": "Internal server error.", "code": "internal_error"}
         # The concrete exception message must not leak to the client.
         assert "model blew up" not in response.text
+        # 500s keep the correlation id, so clients can quote it for debugging.
+        assert response.headers.get("X-Request-ID")
+
+    def test_500_traceback_is_logged_with_the_request_correlation_id(
+        self, client, deepface_stub, tiny_jpeg_base64, caplog
+    ):
+        from app.core.logging import CorrelationIdFilter
+
+        caplog.handler.addFilter(CorrelationIdFilter())
+
+        def explode(**kwargs):
+            raise RuntimeError("boom")
+
+        deepface_stub.verify = explode
+
+        client.post(
+            "/api/v1/verify-faces",
+            json={"face_img": tiny_jpeg_base64, "doc_img": tiny_jpeg_base64},
+            headers={"X-Request-ID": "trace-500"},
+        )
+
+        error_records = [r for r in caplog.records if r.levelname == "ERROR"]
+        assert error_records
+        assert error_records[0].correlation_id == "trace-500"
 
     def test_unknown_route_returns_404_envelope(self, client):
         response = client.get("/api/v1/nope")
