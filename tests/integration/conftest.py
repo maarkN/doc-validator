@@ -1,24 +1,20 @@
-"""Characterization-test fixtures for the legacy Flask app.
+"""Integration-test fixtures: real app, DeepFace stubbed at the boundary.
 
-DeepFace is stubbed at the process boundary (sys.modules) BEFORE the app is
-imported, because importing the real deepface pulls TensorFlow and downloads
-model weights. Everything else (Flask, pydantic, cv2, numpy) is real, so these
-tests freeze the observable HTTP contract of the legacy application layer:
-routing, validation, error envelope, serialization and DeepFace call
-orchestration.
+The DeepFace module is replaced in ``sys.modules`` before the engine's lazy
+imports run, so these tests exercise the full HTTP stack (routing,
+validation, service orchestration, error translation, serialization)
+without TensorFlow or model weights.
 """
 
 import base64
-import os
 import sys
 import types
-from pathlib import Path
 
 import cv2
 import numpy as np
 import pytest
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+from app.api.deps import _get_engine
 
 
 class DeepFaceStub:
@@ -31,22 +27,23 @@ class DeepFaceStub:
         self.extract_faces_calls = []
         self.verify_calls = []
         self.analyze_calls = []
-        # One face per image by default; tests may append more.
         self.faces = [
             {
                 "face": np.zeros((10, 10, 3), dtype=np.float64),
                 "facial_area": {"x": 0, "y": 0, "w": 10, "h": 10},
                 "confidence": 0.99,
                 "is_real": True,
-                "antispoof_score": 0.9,
+                "antispoof_score": np.float32(0.9),
             }
         ]
         self.verify_result = {
             "verified": True,
-            "distance": 0.42,
+            "distance": np.float64(0.42),
             "threshold": 0.68,
         }
-        self.analyze_result = [{"age": 30, "dominant_emotion": "happy"}]
+        self.analyze_result = [
+            {"age": np.int64(30), "emotion": {"happy": np.float32(99.5)}}
+        ]
 
     def extract_faces(self, **kwargs):
         self.extract_faces_calls.append(kwargs)
@@ -67,23 +64,6 @@ _deepface_module = types.ModuleType("deepface")
 _deepface_module.DeepFace = _stub
 sys.modules.setdefault("deepface", _deepface_module)
 
-# The legacy app resolves config/docs.yaml and images/ relative to the CWD.
-os.chdir(REPO_ROOT)
-# Appended (not prepended) so the new src/app package keeps priority for
-# `import app`; the legacy modules (src.face, models.models) still resolve.
-sys.path.append(str(REPO_ROOT))
-
-# Load legacy app.py under a dedicated module name: plain `import app` would
-# collide with the new src/app package.
-import importlib.util  # noqa: E402
-
-_spec = importlib.util.spec_from_file_location("legacy_app", REPO_ROOT / "app.py")
-assert _spec is not None and _spec.loader is not None
-_legacy_module = importlib.util.module_from_spec(_spec)
-sys.modules["legacy_app"] = _legacy_module
-_spec.loader.exec_module(_legacy_module)
-legacy_app = _legacy_module.app
-
 
 @pytest.fixture()
 def deepface_stub():
@@ -92,10 +72,18 @@ def deepface_stub():
 
 
 @pytest.fixture()
-def client(deepface_stub):
-    legacy_app.config["TESTING"] = True
-    with legacy_app.test_client() as test_client:
+def client(deepface_stub, tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from app.core.config import get_settings
+    from app.main import create_app
+
+    monkeypatch.setenv("APP_UPLOAD_DIR", str(tmp_path / "uploads"))
+    get_settings.cache_clear()
+    _get_engine.cache_clear()
+    with TestClient(create_app()) as test_client:
         yield test_client
+    get_settings.cache_clear()
 
 
 @pytest.fixture()

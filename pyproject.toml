@@ -33,10 +33,6 @@ dev = [
     "mypy>=1.11",
     "pre-commit>=3.7",
     "types-requests>=2.31",
-    # Needed only to run the characterization tests against the legacy Flask
-    # app; removed together with the legacy implementation.
-    "flask>=3.0",
-    "swagger-ui-py>=23.9.23",
 ]
 
 [tool.uv]
@@ -46,13 +42,8 @@ package = false
 line-length = 88
 target-version = "py312"
 extend-exclude = [
-    # Legacy implementation, replaced incrementally and removed at the end.
-    "app.py",
-    "sender.py",
-    "src/face.py",
-    "models",
-    "utils",
-    "learning",
+    # Offline experiment scripts kept for reference, not part of the app.
+    "scripts/experiments",
 ]
 
 [tool.ruff.lint]
