@@ -56,23 +56,26 @@ def verify_faces_with_upload(
     settings: SettingsDep,
 ) -> FaceVerificationResult:
     """Store the uploads temporarily and compare them like the JSON endpoint."""
-    face_path = _save_upload(face, settings.upload_dir)
-    document_path = _save_upload(document, settings.upload_dir)
+    face_path: Path | None = None
+    document_path: Path | None = None
     try:
+        face_path = _save_upload(face, settings.upload_dir)
+        document_path = _save_upload(document, settings.upload_dir)
         return service.verify(
-            FaceVerificationRequest(
-                face_img=str(face_path),
-                doc_img=str(document_path),
-                remove_image=True,
-            )
+            FaceVerificationRequest(face_img=str(face_path), doc_img=str(document_path))
         )
     finally:
-        face_path.unlink(missing_ok=True)
-        document_path.unlink(missing_ok=True)
+        for saved_path in (face_path, document_path):
+            if saved_path is not None:
+                saved_path.unlink(missing_ok=True)
 
 
 def _save_upload(upload: UploadFile, upload_dir: Path) -> Path:
     destination = upload_dir / f"{uuid4()}.jpg"
-    with destination.open("wb") as target:
-        shutil.copyfileobj(upload.file, target)
+    try:
+        with destination.open("wb") as target:
+            shutil.copyfileobj(upload.file, target)
+    except Exception:
+        destination.unlink(missing_ok=True)
+        raise
     return destination

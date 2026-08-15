@@ -48,6 +48,34 @@ class TestUploadCleanup:
         assert response.status_code == 500
         assert list((tmp_path / "uploads").iterdir()) == []
 
+    def test_first_upload_is_removed_when_saving_the_second_fails(
+        self, client, monkeypatch, tiny_jpeg_bytes, tmp_path
+    ):
+        import shutil as real_shutil
+
+        from app.api.v1.routes import face_verification as route_module
+
+        calls = {"count": 0}
+
+        def copy_then_fail(source, target):
+            calls["count"] += 1
+            if calls["count"] == 2:
+                raise OSError("disk full")
+            real_shutil.copyfileobj(source, target)
+
+        monkeypatch.setattr(route_module.shutil, "copyfileobj", copy_then_fail)
+
+        response = client.post(
+            "/api/v1/verify-faces/image",
+            files={
+                "document": ("doc.jpg", io.BytesIO(tiny_jpeg_bytes), "image/jpeg"),
+                "face": ("face.jpg", io.BytesIO(tiny_jpeg_bytes), "image/jpeg"),
+            },
+        )
+
+        assert response.status_code == 500
+        assert list((tmp_path / "uploads").iterdir()) == []
+
 
 class TestUrlImages:
     def test_url_images_are_downloaded_and_verified(
