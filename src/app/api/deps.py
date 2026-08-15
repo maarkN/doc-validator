@@ -22,7 +22,7 @@ def get_face_verification_service(settings: SettingsDep) -> FaceVerificationServ
     engine = _get_engine(
         settings.face_recognition_model, settings.face_detector_backend
     )
-    return FaceVerificationService(engine)
+    return FaceVerificationService(engine, deletable_dir=settings.upload_dir)
 
 
 FaceVerificationServiceDep = Annotated[

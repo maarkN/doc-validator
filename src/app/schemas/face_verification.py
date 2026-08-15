@@ -28,8 +28,9 @@ class FaceVerificationRequest(BaseModel):
     )
     remove_image: bool = Field(
         default=False,
-        description="Delete local input files after verification (ignored for "
-        "URL and base64 inputs).",
+        description="Delete local input files after verification. Only files "
+        "inside the configured upload directory are removed; URL and base64 "
+        "inputs are unaffected.",
     )
 
 

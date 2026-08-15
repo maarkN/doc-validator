@@ -48,8 +48,8 @@ def engine():
 
 
 @pytest.fixture()
-def service(engine):
-    return FaceVerificationService(engine)
+def service(engine, tmp_path):
+    return FaceVerificationService(engine, deletable_dir=tmp_path)
 
 
 @pytest.fixture()
@@ -126,6 +126,30 @@ class TestVerify:
 
         assert not face_path.exists()
         assert not doc_path.exists()
+
+    def test_remove_image_never_deletes_files_outside_the_deletable_dir(
+        self, engine, tmp_path
+    ):
+        ok, buffer = cv2.imencode(".jpg", np.full((8, 8, 3), 200, dtype=np.uint8))
+        assert ok
+        protected_dir = tmp_path / "protected"
+        deletable_dir = tmp_path / "deletable"
+        protected_dir.mkdir()
+        deletable_dir.mkdir()
+        protected_file = protected_dir / "asset.jpg"
+        protected_file.write_bytes(buffer.tobytes())
+        service = FaceVerificationService(engine, deletable_dir=deletable_dir)
+
+        result = service.verify(
+            FaceVerificationRequest(
+                face_img=str(protected_file),
+                doc_img=str(protected_file),
+                remove_image=True,
+            )
+        )
+
+        assert result.verified is True
+        assert protected_file.exists()
 
     def test_remove_image_with_base64_input_is_a_no_op(self, service, image_base64):
         result = service.verify(make_request(image_base64, remove_image=True))

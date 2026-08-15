@@ -1,6 +1,7 @@
 """Business logic for verifying a selfie against a document photo."""
 
 import os
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -17,9 +18,16 @@ from app.services.image_loading import is_local_file, load_image
 class FaceVerificationService:
     """Orchestrates face extraction, comparison and optional analyses."""
 
-    def __init__(self, engine: DeepFaceEngine) -> None:
-        """Wire the engine that performs the actual inference calls."""
+    def __init__(self, engine: DeepFaceEngine, deletable_dir: Path) -> None:
+        """Wire the inference engine and the only directory deletions may touch.
+
+        Args:
+            engine: Performs the actual DeepFace calls.
+            deletable_dir: ``remove_image`` only deletes files inside this
+                directory; client-supplied paths elsewhere are never removed.
+        """
         self._engine = engine
+        self._deletable_dir = deletable_dir
 
     def verify(self, request: FaceVerificationRequest) -> FaceVerificationResult:
         """Compare the largest face of each image and build the result.
@@ -76,11 +84,17 @@ class FaceVerificationService:
 
         return max(extracted_faces, key=area)
 
-    @staticmethod
-    def _remove_local_inputs(*sources: str) -> None:
+    def _remove_local_inputs(self, *sources: str) -> None:
         for source in sources:
-            if is_local_file(source):
+            if is_local_file(source) and self._is_deletable(Path(source)):
                 os.remove(source)
+
+    def _is_deletable(self, path: Path) -> bool:
+        try:
+            path.resolve().relative_to(self._deletable_dir.resolve())
+        except ValueError:
+            return False
+        return True
 
 
 def _to_json_safe(value: Any) -> Any:

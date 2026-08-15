@@ -7,6 +7,7 @@ with the deliberate contract changes approved for the refactoring —
 """
 
 import io
+import os
 
 import pytest
 
@@ -47,11 +48,12 @@ class TestVerifyFacesJson:
         assert response.status_code == 200
         assert response.json()["verified"] is True
 
-    def test_remove_image_deletes_local_input_files(
+    def test_remove_image_deletes_files_inside_the_upload_dir(
         self, client, tmp_path, tiny_jpeg_bytes
     ):
-        face_path = tmp_path / "selfie.jpg"
-        doc_path = tmp_path / "document.jpg"
+        upload_dir = tmp_path / "uploads"
+        face_path = upload_dir / "selfie.jpg"
+        doc_path = upload_dir / "document.jpg"
         face_path.write_bytes(tiny_jpeg_bytes)
         doc_path.write_bytes(tiny_jpeg_bytes)
 
@@ -67,6 +69,22 @@ class TestVerifyFacesJson:
         assert response.status_code == 200
         assert not face_path.exists()
         assert not doc_path.exists()
+
+    def test_remove_image_leaves_files_outside_the_upload_dir_untouched(
+        self, client, tmp_path, tiny_jpeg_file
+    ):
+        response = client.post(
+            "/api/v1/verify-faces",
+            json={
+                "face_img": tiny_jpeg_file,
+                "doc_img": tiny_jpeg_file,
+                "remove_image": True,
+            },
+        )
+
+        assert response.status_code == 200
+        assert response.json()["verified"] is True
+        assert os.path.exists(tiny_jpeg_file)
 
     def test_remove_image_with_base64_input_succeeds_as_a_no_op(
         self, client, tiny_jpeg_base64

@@ -59,7 +59,9 @@ retornavam o envelope de erro) e foram consertadas:
 - **`remove_image` com base64/URL**: antes chamava `os.remove` na própria
   string base64 e a requisição inteira falhava (depois da comparação já
   feita). Agora só arquivos locais existentes são removidos; para base64/URL
-  o flag é ignorado.
+  o flag é ignorado. Por segurança, a deleção é **restrita ao diretório de
+  uploads** (`APP_UPLOAD_DIR`): o endpoint não autenticado não pode mais
+  apagar arquivos arbitrários do servidor via path.
 
 ## Outras mudanças de runtime
 
