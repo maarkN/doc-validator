@@ -77,6 +77,25 @@ class TestLoadImage:
         with pytest.raises(InvalidImageError):
             load_image("definitely not base64!!")
 
+    @pytest.mark.parametrize("source", ["", "   ", "data:image/jpeg;base64,"])
+    def test_empty_image_data_raises_invalid_image(self, source):
+        with pytest.raises(InvalidImageError):
+            load_image(source)
+
+    def test_url_with_empty_body_raises_invalid_image(self, monkeypatch):
+        class FakeResponse:
+            content = b""
+
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(
+            image_loading.requests, "get", lambda url, timeout: FakeResponse()
+        )
+
+        with pytest.raises(InvalidImageError):
+            load_image("https://example.com/empty.jpg")
+
 
 class TestIsLocalFile:
     def test_existing_file_is_local(self, tmp_path):

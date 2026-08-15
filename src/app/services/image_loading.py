@@ -39,7 +39,15 @@ def load_image(source: str) -> np.ndarray:
     else:
         image_bytes = _decode_base64(source)
 
-    image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
+    # cv2.imdecode raises on an empty buffer and returns None for garbage.
+    if not image_bytes:
+        raise InvalidImageError("The provided image data is empty.")
+    try:
+        image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
+    except cv2.error as error:
+        raise InvalidImageError(
+            "The provided data could not be decoded as an image."
+        ) from error
     if image is None:
         raise InvalidImageError("The provided data could not be decoded as an image.")
     return image

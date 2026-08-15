@@ -179,6 +179,16 @@ class TestVerifyFacesJson:
         assert response.status_code == 400
         assert response.json()["code"] == "invalid_image"
 
+    @pytest.mark.parametrize("empty", ["", "   ", "data:image/jpeg;base64,"])
+    def test_empty_image_data_returns_400_invalid_image(self, client, empty):
+        response = client.post(
+            "/api/v1/verify-faces",
+            json={"face_img": empty, "doc_img": empty},
+        )
+
+        assert response.status_code == 400
+        assert response.json()["code"] == "invalid_image"
+
     def test_largest_face_is_selected_for_verification(
         self, client, deepface_stub, tiny_jpeg_base64
     ):
